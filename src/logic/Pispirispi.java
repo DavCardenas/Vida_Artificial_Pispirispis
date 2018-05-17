@@ -5,7 +5,7 @@ import java.awt.Rectangle;
 public class Pispirispi implements Runnable{
 	
 	public static final double SPEED_IN = 1; // velocidad inicial (respecto al tiempo de entrada) px/dia
-	public static final double SPEED_OUT = SPEED_IN/30; // velocidad reducida cada n años
+	public static final double SPEED_OUT = SPEED_IN/Simulation.time_simulation; // velocidad reducida cada año
 	
 	private double energy; // energia que les permite moverse, si llega a 0 mueren
 	private String genre; // generero macho o hembra
@@ -19,6 +19,7 @@ public class Pispirispi implements Runnable{
 	private double age; // edad medida en dias
 	private Thread move; // hilo que permite moverse
 	private boolean start; // permite iniciar o detener el hilo
+	private boolean canEvolution; // controla si puede o no evolucionar
 	
 	public Pispirispi() {
 		
@@ -39,14 +40,34 @@ public class Pispirispi implements Runnable{
 		this.age = 0;
 		start = false;
 		move = new Thread(this);
+		canEvolution = false;
+	}
+	
+	/**
+	 * controla el cambio de etapa y la edad
+	 */
+	public void evolution() {
+		changeStage();
+		calculateSize();
+		age++;
+		
 	}
 	
 	/**
 	 * cambia al siguiente estado de edad
 	 * se debe llamar cada vez que pasa un año
 	 */
-	public void changeStage() {
-		stage = Stage.getNextStage(stage);
+	private void changeStage() {
+		int time = stage.getTime()*Simulation.DAYS_FOR_YEAR;
+		
+		if (age >= time) {
+			if (canEvolution) {
+				stage = Stage.getNextStage(stage);
+				canEvolution = false;
+			}else {
+				stage = Stage.MORIR;
+			}
+		}
 	}
 	
 	/**
@@ -61,15 +82,15 @@ public class Pispirispi implements Runnable{
 	 * recalcula el tamaño a partir de la edad
 	 * se debe llamar cada vez que pasa un año
 	 */
-	public void calculateSize() {
-		size += stage.getSize();
+	private void calculateSize() {
+		size = stage.getSize();
 	}
 	
 	/**
 	 * Permite cambiar las posiciones segun la direccion
 	 * @param dir direccion hacia la que se mueve
 	 */
-	public void move(Direction dir) {
+	private void move(Direction dir) {
 		switch (dir) {
 		case NORTE:
 			position_Y -= speed; // se resta porque va hacia arriba
@@ -228,12 +249,85 @@ public class Pispirispi implements Runnable{
 
 	@Override
 	public void run() {
+		Pispirispi child;
+		Fifirufa fifirufa;
+		
 		while (start) {
 			
-			move(direction);
+			if (stage != Stage.MORIR) {
+				move(direction);
+			}else {
+				stopMove(); // si esta muerto se detiene el hilo
+			}
+			
+			// calculo de colisiones para cada elemento de la poblacion
+			for (int i = 0; i < Habitat.poblation.size(); i++) {
+				
+				if (Habitat.poblation.get(i) != this) {
+					if (Habitat.poblation.get(i).getStage() != Stage.MORIR) { // si no esta muerto
+						if (collision(Habitat.poblation.get(i).getBounds())) { // si existe la colision
+							
+							if (!Habitat.poblation.get(i).getGenre().equals(genre)) { // si son de diferente genero
+								if (Habitat.poblation.get(i).getClase().equals(clase)) { // si son de la misma clase
+									if (Habitat.poblation.get(i).getStage().equals(Stage.ADULTA)
+											&& stage.equals(Stage.ADULTA)) { // si son adultos
+										child = new Pispirispi(energy, Genre.getGenreRandom().toString(), clase, position_X, position_Y);
+										Habitat.poblation.add(child);
+									}
+								}
+							}
+							
+							if (Habitat.poblation.get(i).getGenre().equals(genre)) { // si son de igual genero
+								if (!Habitat.poblation.get(i).getClase().equals(clase)) { // si son de diferente clase
+									if (Habitat.poblation.get(i).getStage().equals(Stage.ADOLECENCIA)
+											&& stage.equals(Stage.ADOLECENCIA)) { // si son adolecentes
+										if (Habitat.poblation.get(i).getEnergy() > energy) { // muere el de menor energia
+											stage = Stage.MORIR; 
+										}else {
+											Habitat.poblation.get(i).setStage(Stage.MORIR);
+										}
+										
+									}
+								}
+							}
+							
+							if (Habitat.poblation.get(i).getAge() < age) {// si es menor a la edad
+								if (!Habitat.poblation.get(i).getClase().equals(clase)) {// si son de diferente clase
+									canEvolution = true; // absorvio a otro y puede evolucionar
+								}
+							}
+							
+							direction = Direction.nextDirection(); // rebotan a una direccion al azar
+							Habitat.poblation.get(i).setDirection(Direction.nextDirection());
+						}
+					}
+				}
+			}
+			
+			// calculo de colisiones para los alimentos
+			
+			for (int i = 0; i < Habitat.resource.size(); i++) {
+				if (collision(Habitat.resource.get(i).getBounds())) { // si colisionan
+					if (Habitat.resource.get(i).getSize() <= (size/2)) { // si la alicanola es la mitad o menos del pispirispi
+						energy += Habitat.resource.get(i).getEnergy(); // agrega energia
+						fifirufa = new Fifirufa(position_X, position_Y, Habitat.resource.get(i).getSize(), Habitat.init_energy_fifirufa);
+						Habitat.residue.add(fifirufa); // se crea una fifirufa
+						Habitat.resource.remove(i); // se elimina la alicanola
+					}
+				}
+			}
+			
+			// calculo colisiones para fifirufas
+			
+			for (int i = 0; i < Habitat.residue.size(); i++) {
+				if (collision(Habitat.residue.get(i).getBounds())) { // si colisionan
+					energy -= Habitat.residue.get(i).getEnergy(); // reduce energia
+				}
+			}
+			
 			
 			try {
-				Thread.sleep(10); // para evitar que consuma todo el procesador
+				Thread.sleep(100); // para evitar que consuma todo el procesador
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}

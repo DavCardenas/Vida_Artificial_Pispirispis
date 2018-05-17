@@ -4,21 +4,21 @@ import java.util.ArrayList;
 
 public class Habitat {
 
-	public ArrayList<Pispirispi> poblation; // poblacion total de pispirispis
-	public ArrayList<Alicanola> resource; // recursos alimenticios alicanolas
-	public ArrayList<Fifirufa> residue; // residuos que quedan por alimentos fifirufas
+	public static ArrayList<Pispirispi> poblation; // poblacion total de pispirispis
+	public static ArrayList<Alicanola> resource; // recursos alimenticios alicanolas
+	public static ArrayList<Fifirufa> residue; // residuos que quedan por alimentos fifirufas
 	
 	private double rate_init_food = 0.2; // el 20% del espacion total del habitat
 	
 	// entradas
 	
 	// ninguna de las tasas pueden ser mayores a 1
-	public double size; // superficie en metros cuadrados
+	public static double size; // superficie en metros cuadrados
 	private int init_poblation; // poblacion inicial
 	private int init_food; // cantidad comida inicial
 	private double init_energy; // cantidad de energia total para los pispirispis
 	private double init_energy_alicanola; // cantidad de energia que aportan las alicanolas
-	public double init_energy_fifirufa; // cantidad de energia que quitan las fifirufas
+	public static double init_energy_fifirufa; // cantidad de energia que quitan las fifirufas
 	private double rate_food; // tasa de generacion de alimentos
 	private double rate_male; // porcentaje de machos
 	private double rate_female; // porcentaje de hembras
@@ -41,9 +41,9 @@ public class Habitat {
 	private int size_poblation; // poblacion total
 	
 	
-	public Habitat(double size, int init_poblation, int init_food, double init_energy, double init_energy_alicanola,
-			double rate_food, double rate_male, double rate_female,double rate_inpopios, double rate_tropus) {
-		this.size = size;
+	public Habitat(double psize, int init_poblation, int init_food, double init_energy, double init_energy_alicanola,
+			double rate_food, double rate_male, double rate_female,double rate_inpopios, double rate_tropus,  double pinit_energy_fifirufa) {
+		size = psize;
 		this.init_poblation = init_poblation;
 		this.init_food = init_food;
 		this.init_energy = init_energy;
@@ -53,6 +53,11 @@ public class Habitat {
 		this.rate_female = rate_female;
 		this.rate_inpopios = rate_inpopios;
 		this.rate_tropus = rate_tropus;
+		init_energy_fifirufa = pinit_energy_fifirufa;
+		
+		poblation = new ArrayList<>();
+		resource = new ArrayList<>();
+		residue = new ArrayList<>();
 	}
 	
 	
@@ -410,5 +415,17 @@ public class Habitat {
 	public void setSize_poblation(int size_poblation) {
 		this.size_poblation = size_poblation;
 	}
-	
+
+	public ArrayList<Pispirispi> getPoblation() {
+		return poblation;
+	}
+
+	public ArrayList<Alicanola> getResource() {
+		return resource;
+	}
+
+	public ArrayList<Fifirufa> getResidue() {
+		return residue;
+	}
+
 }
