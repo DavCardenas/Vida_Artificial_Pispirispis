@@ -1,17 +1,17 @@
 package logic;
 
 public enum Stage {
-	NACIMIENTO("Nacimiento",0), INFANCIA("Infancia",5), ADOLECENCIA("Adolecencia",10), ADULTA("Adulta",15), VEJEZ("Vejez",20), MORIR("Morir",25);
+	NACIMIENTO("Nacimiento",0), INFANCIA("Infancia",10), ADOLECENCIA("Adolecencia",5), ADULTA("Adulta",10), VEJEZ("Vejez",5), MORIR("Morir",999999999);
 	
-	private String name;
-	private int time;
+	private String name; // nombre de la etapa
+	private int time; // duracion en años de la etapa
 	
 	private Stage(String pName, int pTime){
 		name = pName;
 		time = pTime;
 	}
 	
-	public static Stage getNextStage(Stage stage, int pTime) {
+	public static Stage getNextStage(Stage stage) {
 		switch (stage) {
 		case NACIMIENTO:
 				return Stage.INFANCIA;

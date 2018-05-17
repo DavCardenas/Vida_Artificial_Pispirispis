@@ -1,22 +1,26 @@
 package logic;
 
-public class Pispirispi {
+import java.awt.Rectangle;
+
+public class Pispirispi implements Runnable{
 	
 	public static final double SIZE_IN = 10; // tamaño inicial 10 px
 	public static final double GROWTH_FACTOR_SIZE = SIZE_IN * 0.3; // factor de crecimiento en tamaño en px
-	public static final double SPEED_IN = 0.5; // velocidad inicial 0.5px/s (respecto al tiempo de entrada)
+	public static final double SPEED_IN = 1; // velocidad inicial (respecto al tiempo de entrada) px/dia
+	public static final double SPEED_OUT = SPEED_IN/30; // velocidad reducida cada n años
 	
-
 	private double energy; // energia que les permite moverse, si llega a 0 mueren
 	private String genre; // generero macho o hembra
 	private String clase; // clase inopios o tropus
 	private double size; // tamaño que aumenta con el tiempo
 	private String direction; // direccion en la que se mueve (N, S, E, O, NE, NO, SE, SO) Norte, Sur, Este, Oeste
 	private String stage; // etapa de madurez (nacimiento, infancia, adolecencia, adulta, vejez, morir)
-	private double speed; // velocidad con la que se mueven, depende de la energia y de la etapa, entre mayor etapa menor velocidad
+	private double speed; // velocidad con la que se mueven, depende de la edad, entre mayor edad menor velocidad
 	private double position_X; // almacena la posicion en X.
 	private double position_Y; // almacena la posicion en Y;
-	private double age; // edad
+	private double age; // edad medida en dias
+	private Thread move; // hilo que permite moverse
+	private boolean start; // permite iniciar o detener el hilo
 	
 	public Pispirispi() {
 		
@@ -35,9 +39,103 @@ public class Pispirispi {
 		this.stage = Stage.NACIMIENTO.toString();
 		this.speed = SPEED_IN;
 		this.age = 0;
+		start = false;
+		move = new Thread(this);
+	}
+	
+	/**
+	 * recalcula la velocidad a partir de la edad
+	 * se debe llamar cada vez que pasa un año
+	 */
+	public void calculateSpeed() {
+		speed -= SPEED_OUT;
+	}
+	
+	/**
+	 * recalcula el tamaño a partir de la edad
+	 * se debe llamar cada vez que pasa un año
+	 */
+	public void calculateSize() {
+		size += GROWTH_FACTOR_SIZE;
+	}
+	
+	/**
+	 * Permite cambiar las posiciones segun la direccion
+	 * @param dir direccion hacia la que se mueve
+	 */
+	public void move(Direction dir) {
+		switch (dir) {
+		case NORTE:
+			position_Y -= speed; // se resta porque va hacia arriba
+			break;
+		case SUR:
+			position_Y += speed; // se suma porque va hacia abajo
+			break;
+		case ESTE:
+			position_X += speed; // se suma porque va hacia la derecha
+			break;
+		case OESTE:
+			position_X -= speed; // se resta porque va hacia la izquierda
+			break;
+		case NORESTE:
+			position_Y -= speed; // se resta porque va hacia arriba
+			position_X += speed; // se suma porque va hacia la derecha
+			break;
+		case NOROESTE:
+			position_Y -= speed; // se resta porque va hacia arriba
+			position_X -= speed; // se resta porque va hacia la izquierda
+			break;
+		case SURESTE:
+			position_Y += speed; // se suma porque va hacia abajo
+			position_X += speed; // se suma porque va hacia la derecha
+			break;
+		case SUROESTE:
+			position_Y += speed; // se suma porque va hacia abajo
+			position_X -= speed; // se resta porque va hacia la izquierda
+			break;
+		default:
+			break;
+		}
+		
+		energy -= 1; // reduccion de energia por moverse
+	}
+	
+	/**
+	 * inicia el hilo move
+	 */
+	public void startMove() {
+		start = true;
+		move.start();
+	}
+	
+	/**
+	 * detiene el hilo
+	 */
+	public void stopMove() {
+		start = false;
+	}
+	
+	
+	/**
+	 * Devuelve verdadero si hay una interseccion con el 
+	 * parametro de entrada
+	 * 
+	 * @param element Tipo Rectangle para realizar la colision
+	 * @return boolean
+	 */
+	public boolean collision(Rectangle element) {
+		return getBounds().intersects(element);
 	}
 
-	
+	/**
+	 * Devuelve un rectangulo con la posicion y dimensiones
+	 * del pispirispi para calcular las colisiones
+	 * 
+	 * @return Rectangle 
+	 */
+	public Rectangle getBounds() {
+		return new Rectangle((int)position_X, (int)position_Y, (int)size, (int)size);
+	}
 
 	public double getAge() {
 		return age;
@@ -120,8 +218,18 @@ public class Pispirispi {
 	public void setPosition_Y(double position_Y) {
 		this.position_Y = position_Y;
 	}
-	
-	
-	
+
+
+	@Override
+	public void run() {
+		while (start) {
+			
+			try {
+				Thread.sleep(10); // para evitar que consuma todo el procesador
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+	}
 	
 }
