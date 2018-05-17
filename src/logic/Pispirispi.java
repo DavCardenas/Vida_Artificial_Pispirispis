@@ -4,8 +4,6 @@ import java.awt.Rectangle;
 
 public class Pispirispi implements Runnable{
 	
-	public static final double SIZE_IN = 10; // tamaño inicial 10 px
-	public static final double GROWTH_FACTOR_SIZE = SIZE_IN * 0.3; // factor de crecimiento en tamaño en px
 	public static final double SPEED_IN = 1; // velocidad inicial (respecto al tiempo de entrada) px/dia
 	public static final double SPEED_OUT = SPEED_IN/30; // velocidad reducida cada n años
 	
@@ -13,8 +11,8 @@ public class Pispirispi implements Runnable{
 	private String genre; // generero macho o hembra
 	private String clase; // clase inopios o tropus
 	private double size; // tamaño que aumenta con el tiempo
-	private String direction; // direccion en la que se mueve (N, S, E, O, NE, NO, SE, SO) Norte, Sur, Este, Oeste
-	private String stage; // etapa de madurez (nacimiento, infancia, adolecencia, adulta, vejez, morir)
+	private Direction direction; // direccion en la que se mueve (N, S, E, O, NE, NO, SE, SO) Norte, Sur, Este, Oeste
+	private Stage stage; // etapa de madurez (nacimiento, infancia, adolecencia, adulta, vejez, morir)
 	private double speed; // velocidad con la que se mueven, depende de la edad, entre mayor edad menor velocidad
 	private double position_X; // almacena la posicion en X.
 	private double position_Y; // almacena la posicion en Y;
@@ -34,13 +32,21 @@ public class Pispirispi implements Runnable{
 		this.energy = energy;
 		this.genre = genre;
 		this.clase = clase;
-		this.size = SIZE_IN;
-		this.direction = Direction.nextDirection().toString(); // asigna una direccion al azar
-		this.stage = Stage.NACIMIENTO.toString();
+		this.size = Stage.NACIMIENTO.getSize();
+		this.direction = Direction.nextDirection(); // asigna una direccion al azar
+		this.stage = Stage.NACIMIENTO;
 		this.speed = SPEED_IN;
 		this.age = 0;
 		start = false;
 		move = new Thread(this);
+	}
+	
+	/**
+	 * cambia al siguiente estado de edad
+	 * se debe llamar cada vez que pasa un año
+	 */
+	public void changeStage() {
+		stage = Stage.getNextStage(stage);
 	}
 	
 	/**
@@ -56,7 +62,7 @@ public class Pispirispi implements Runnable{
 	 * se debe llamar cada vez que pasa un año
 	 */
 	public void calculateSize() {
-		size += GROWTH_FACTOR_SIZE;
+		size += stage.getSize();
 	}
 	
 	/**
@@ -179,19 +185,19 @@ public class Pispirispi implements Runnable{
 		this.size = size;
 	}
 
-	public String getDirection() {
+	public Direction getDirection() {
 		return direction;
 	}
 
-	public void setDirection(String direction) {
+	public void setDirection(Direction direction) {
 		this.direction = direction;
 	}
 
-	public String getStage() {
+	public Stage getStage() {
 		return stage;
 	}
 
-	public void setStage(String stage) {
+	public void setStage(Stage stage) {
 		this.stage = stage;
 	}
 
@@ -223,6 +229,8 @@ public class Pispirispi implements Runnable{
 	@Override
 	public void run() {
 		while (start) {
+			
+			move(direction);
 			
 			try {
 				Thread.sleep(10); // para evitar que consuma todo el procesador
