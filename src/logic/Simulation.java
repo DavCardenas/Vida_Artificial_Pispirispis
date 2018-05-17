@@ -69,6 +69,10 @@ public class Simulation implements Runnable {
 		simulation = new Thread(this);
 	}
 
+//	public void getAmmount_age_adolecence() {
+//		this.habitat.getAmmount_age_adolecence();
+//	}
+	
 	@Override
 	public void run() {
 		

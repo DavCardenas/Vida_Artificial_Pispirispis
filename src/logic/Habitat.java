@@ -114,7 +114,8 @@ public class Habitat {
 	
 	
 	/**
-	 * genera alimentos constatemente en dos zonas, se debe llamar cada determinado tiempo, no siempre
+	 * genera alimentos constatemente en dos zonas, se debe llamar cada determinado 
+	 * tiempo, no siempre
 	 */
 	public void generateFood() {
 		double ammount_food = resource.size(); // cantidad de comida actual
