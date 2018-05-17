@@ -21,6 +21,7 @@ public class WindowsPrincipal extends JFrame{
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setResizable(false);
 		setTitle(TITLE);
+		//me esta sirviendo el commit sebastiannnnnnnn
 		
 	}
 
