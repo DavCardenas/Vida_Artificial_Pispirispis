@@ -59,14 +59,14 @@ public class Pispirispi implements Runnable{
 	 */
 	private void changeStage() {
 		double time = stage.getTime()*Simulation.DAYS_FOR_YEAR;
-		System.out.println("Primero " + stage.getTime());
+//		System.out.println("Primero " + stage.getTime());
 		if (stage != Stage.NACIMIENTO) {
 			if (age >= time) {
 				if (canEvolution) {
 					stage = Stage.getNextStage(stage);
 					canEvolution = false;
 				}else {
-					System.out.println("Segundo se Muere");
+//					System.out.println("Segundo se Muere");
 					stage = Stage.MORIR;
 				}
 			}

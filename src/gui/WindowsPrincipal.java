@@ -2,26 +2,22 @@ package gui;
 
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
-import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
-import org.jfree.data.category.DefaultCategoryDataset;
-
-import logic.Habitat;
 import logic.Simulation;
 
 public class WindowsPrincipal extends JFrame implements Runnable{
@@ -47,7 +43,7 @@ public class WindowsPrincipal extends JFrame implements Runnable{
 	private JTextField txtSize, txtPoblation,txtFood, txtEnergy,
 		txtAlicanola,txtRateFood,txtMale,txtFemale,txtInopios,txtTropus, txtTime,txtFifirufas;
 	
-	private JDialog dialogGraphic;
+	private WindowData dialogGraphic;
 	
 	public double size; // superficie en metros cuadrados
 	private int init_poblation; // poblacion inicial
@@ -73,15 +69,10 @@ public class WindowsPrincipal extends JFrame implements Runnable{
 		this.setLayout(new GridBagLayout());
 		this.constraints = new GridBagConstraints();
 		thread = new Thread(this);
-		this.dialogGraphic = new JDialog(this,true);
-		this.dialogGraphic.setSize(new Dimension(500, 500));
-		this.dialogGraphic.setLocationRelativeTo(null);
+		this.dialogGraphic = new WindowData(this,null);
 		this.initComponents();
 		this.addComponents();
-		this.activateButton();
-//		this.initSimulation();
-		
-				
+		this.activateButton();		
 	}
 	
 	public void initComponents() {
@@ -172,6 +163,11 @@ public class WindowsPrincipal extends JFrame implements Runnable{
 	
 	}
 	
+	
+	/**
+	 * Toma los valores de los componentes de las cajas de tezto
+	 * Esta validado que pueda hacer casteo
+	 * 	 */
 	public void getValuesFromComponents() {
 		try {
 			size = Double.parseDouble(this.txtSize.getText());
@@ -205,38 +201,37 @@ public class WindowsPrincipal extends JFrame implements Runnable{
 			public void actionPerformed(ActionEvent e) {
 				getValuesFromComponents();
 				initSimulation();
-				JFreeChart freeChart = ChartFactory.createLineChart("Pispirispis","Dìas","Hombres",getDefaultCategoryDataset(),
+				dialogGraphic.setList(simulation.getListMale());
+//				jScrollPane = new JScrollPane(jTable);
+				JFreeChart freeChart = ChartFactory.createLineChart("Pispirispis","Dìas","Población",dialogGraphic.getDefaultCategoryDataset(),
 						PlotOrientation.VERTICAL,true,true,false);
 				chartPanel = new ChartPanel(freeChart);
+				thread.start();//inicia hilo de pintado
 				chartPanel.setPreferredSize(new Dimension(500, 500));
-				dialogGraphic.add(chartPanel);
+				dialogGraphic.getPanelGraphic().add(chartPanel);
+				dialogGraphic.add(dialogGraphic.getPanelGraphic());
+				dialogGraphic.addValuesToTable();
+				
+				dialogGraphic.addScrollPane();
 				chartPanel.setVisible(true);
-				dialogGraphic.setVisible(true);
-				thread.start();
+				dialogGraphic.getjScrollPane().setVisible(true);
+				dialogGraphic.setVisible(true);		
 			}
 		});
 	}
 	
-	public DefaultCategoryDataset getDefaultCategoryDataset() {
-		DefaultCategoryDataset categoryDataset = new DefaultCategoryDataset();
-		for (int i = 0; i < this.simulation.getListMale().size(); i++) {
-			categoryDataset.addValue(this.simulation.getListMale().get(i).
-					getValue(), "Hombre", ""+this.simulation.getListMale().
-					get(i).getDay());
-		}
-		
-	return categoryDataset;
-	}
 
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
 		while (true) {
-			JFreeChart freeChart = ChartFactory.createLineChart("Pispirispis","Dìas","Hombres",getDefaultCategoryDataset(),
+			JFreeChart freeChart = ChartFactory.createLineChart("Pispirispis","Dìas","Población",dialogGraphic.getDefaultCategoryDataset(),
 					PlotOrientation.VERTICAL,true,true,false);
-//			chartPanel = new ChartPanel(freeChart);
 						chartPanel.setChart(freeChart);
+						dialogGraphic.addValuesToTable();
 						chartPanel.repaint();
+						dialogGraphic.getPanelGraphic().repaint();
+						dialogGraphic.getjScrollPane().repaint();
 						dialogGraphic.repaint();
 			try {
 				Thread.sleep(100);

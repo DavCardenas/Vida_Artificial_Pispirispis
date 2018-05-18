@@ -73,7 +73,6 @@ public class Habitat {
 		int ammount_tropus = (int)(init_poblation*rate_tropus);
 		int ammount_male = (int)(init_poblation*rate_male);
 		int ammount_female = (int)(init_poblation*rate_female);
-		System.out.println("Pruebas iniciales: "+ammount_inopios+" * "+ammount_tropus+" * "+ammount_male+" * "+ammount_female);
 		for (int i = 0; i < init_poblation; i++) {
 			
 			if (ammount_inopios > 0) {
