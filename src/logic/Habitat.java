@@ -1,5 +1,6 @@
 package logic;
 
+import java.awt.Rectangle;
 import java.util.ArrayList;
 
 public class Habitat {
@@ -28,16 +29,16 @@ public class Habitat {
 	private double size_alicanola; // alacena el tamaño para las anicanolas, es variable
 	
 	// salidas
-	private int ammount_class_inopio; // cantidad de pispirispis con clase inopio porcentaje
-	private int ammount_class_tropus; // cantidad de pispirispis con clase tropus porcentaje
-	private int ammount_age_birth; // cantidad de pispirispis que nacieron porcentaje
-	private int ammount_age_childhood; // cantidad de pispirispis que son infantes porcentaje
-	private int ammount_age_adolecence; // cantidad de pispirispis que son adolecentes porcentaje
-	private int ammount_age_adult; // cantidad de pispirispis que son adultos porcentaje
-	private int ammount_age_old; // cantidad de pispirispis que son viejos porcentaje
-	private int ammount_age_die; // cantidad de pispirispis que estan muertos porcentaje
-	private int ammout_genre_male; // cantidad de pispirispis machos porcentaje
-	private int ammout_genre_female; // cantidad de pispirispis hembras porcentaje
+	private double ammount_class_inopio; // cantidad de pispirispis con clase inopio porcentaje
+	private double ammount_class_tropus; // cantidad de pispirispis con clase tropus porcentaje
+	private double ammount_age_birth; // cantidad de pispirispis que nacieron porcentaje
+	private double ammount_age_childhood; // cantidad de pispirispis que son infantes porcentaje
+	private double ammount_age_adolecence; // cantidad de pispirispis que son adolecentes porcentaje
+	private double ammount_age_adult; // cantidad de pispirispis que son adultos porcentaje
+	private double ammount_age_old; // cantidad de pispirispis que son viejos porcentaje
+	private double ammount_age_die; // cantidad de pispirispis que estan muertos porcentaje
+	private double ammout_genre_male; // cantidad de pispirispis machos porcentaje
+	private double ammout_genre_female; // cantidad de pispirispis hembras porcentaje
 	private int size_poblation; // poblacion total
 	
 	
@@ -72,7 +73,7 @@ public class Habitat {
 		int ammount_tropus = (int)(init_poblation*rate_tropus);
 		int ammount_male = (int)(init_poblation*rate_male);
 		int ammount_female = (int)(init_poblation*rate_female);
-		
+		System.out.println("Pruebas iniciales: "+ammount_inopios+" * "+ammount_tropus+" * "+ammount_male+" * "+ammount_female);
 		for (int i = 0; i < init_poblation; i++) {
 			
 			if (ammount_inopios > 0) {
@@ -230,7 +231,7 @@ public class Habitat {
 	 * retorna la cantidad de elementos que son de tipo inopio
 	 * @return
 	 */
-	public int getAmmount_class_inopio() {
+	public double getAmmount_class_inopio() {
 		ammount_class_inopio = 0;
 		
 		for (Pispirispi pispirispi : poblation) {
@@ -250,7 +251,7 @@ public class Habitat {
 	 * retorna la cantidad de elementos de tipo tropus
 	 * @return
 	 */
-	public int getAmmount_class_tropus() {
+	public double getAmmount_class_tropus() {
 		ammount_class_tropus = 0;
 		for (Pispirispi pispirispi : poblation) {
 			if (pispirispi.getClase().toString().equals(Class.INOPIOS.toString())) {
@@ -271,7 +272,7 @@ public class Habitat {
 	 * de nacimiento
 	 * @return
 	 */
-	public int getAmmount_age_birth() {
+	public double getAmmount_age_birth() {
 		ammount_age_birth = 0;
 		for (Pispirispi pispirispi : poblation) {
 			if (pispirispi.getStage().toString().equals(Stage.NACIMIENTO.toString())) {
@@ -279,7 +280,7 @@ public class Habitat {
 			}
 		}
 		
-		return ammount_age_birth/poblation.size();
+		return ammount_age_birth/poblation.size()*100;
 	}
 
 
@@ -288,7 +289,7 @@ public class Habitat {
 	}
 
 
-	public int getAmmount_age_childhood() {
+	public double getAmmount_age_childhood() {
 		ammount_age_childhood = 0;
 		for (Pispirispi pispirispi : poblation) {
 			if (pispirispi.getStage().toString().equals(Stage.INFANCIA.toString())) {
@@ -305,7 +306,7 @@ public class Habitat {
 	}
 
 
-	public int getAmmount_age_adolecence() {
+	public double getAmmount_age_adolecence() {
 		ammount_age_adolecence = 0;
 		for (Pispirispi pispirispi : poblation) {
 			if (pispirispi.getStage().toString().equals(Stage.ADOLECENCIA.toString())) {
@@ -322,7 +323,7 @@ public class Habitat {
 
 
 
-	public int getAmmount_age_adult() {
+	public double getAmmount_age_adult() {
 		ammount_age_adult = 0;
 		for (Pispirispi pispirispi : poblation) {
 			if (pispirispi.getStage().toString().equals(Stage.ADULTA.toString())) {
@@ -340,7 +341,7 @@ public class Habitat {
 
 
 
-	public int getAmmount_age_old() {
+	public double getAmmount_age_old() {
 		ammount_age_old = 0;
 		for (Pispirispi pispirispi : poblation) {
 			if (pispirispi.getStage().toString().equals(Stage.VEJEZ.toString())) {
@@ -358,7 +359,7 @@ public class Habitat {
 
 
 
-	public int getAmmount_age_die() {
+	public double getAmmount_age_die() {
 		ammount_age_die = 0;
 		for (Pispirispi pispirispi : poblation) {
 			if (pispirispi.getStage().toString().equals(Stage.MORIR.toString())) {
@@ -374,9 +375,11 @@ public class Habitat {
 		this.ammount_age_die = ammount_age_die;
 	}
 
+	public static Rectangle getBounds() {
+		return new Rectangle(0, 0, (int) Habitat.size, (int) Habitat.size);
+	}
 
-
-	public int getAmmout_genre_male() {
+	public double getAmmout_genre_male() {
 		ammout_genre_male = 0;
 		for (Pispirispi pispirispi : poblation) {
 			if (pispirispi.getGenre().equals(Genre.MACHO.toString())) {
@@ -393,7 +396,7 @@ public class Habitat {
 	}
 
 
-	public int getAmmout_genre_female() {
+	public double getAmmout_genre_female() {
 		ammout_genre_female = 0;
 		for (Pispirispi pispirispi : poblation) {
 			if (pispirispi.getGenre().equals(Genre.HEMRBA.toString())) {
@@ -409,7 +412,12 @@ public class Habitat {
 	}
 	
 	public int getSize_poblation() {
-		size_poblation = poblation.size();
+		size_poblation = 0;
+		for (int i = 0; i < Habitat.poblation.size(); i++) {
+			if (Habitat.poblation.get(i).getStage() !=  Stage.MORIR) {
+				size_poblation++;
+			}
+		}
 		return size_poblation;
 	}
 	

@@ -58,7 +58,7 @@ public class Pispirispi implements Runnable{
 	 * se debe llamar cada vez que pasa un año
 	 */
 	private void changeStage() {
-		int time = stage.getTime()*Simulation.DAYS_FOR_YEAR;
+		double time = stage.getTime()*Simulation.DAYS_FOR_YEAR;
 		
 		if (age >= time) {
 			if (canEvolution) {
@@ -69,6 +69,7 @@ public class Pispirispi implements Runnable{
 			}
 		}
 	}
+
 	
 	/**
 	 * recalcula la velocidad a partir de la edad
@@ -325,6 +326,9 @@ public class Pispirispi implements Runnable{
 				}
 			}
 			
+			if(!collision(Habitat.getBounds())) {
+				direction = Direction.nextDirection();
+			}
 			
 			try {
 				Thread.sleep(100); // para evitar que consuma todo el procesador
