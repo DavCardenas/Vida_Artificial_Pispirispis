@@ -151,4 +151,86 @@ public class Simulation implements Runnable {
 		this.listPoblationSize = listMale;
 	}
 
+	public ArrayList<Data> getListPoblationSize() {
+		return listPoblationSize;
+	}
+
+	public void setListPoblationSize(ArrayList<Data> listPoblationSize) {
+		this.listPoblationSize = listPoblationSize;
+	}
+
+	public ArrayList<Data> getListFemale() {
+		return listFemale;
+	}
+
+	public void setListFemale(ArrayList<Data> listFemale) {
+		this.listFemale = listFemale;
+	}
+
+	public ArrayList<Data> getListAdults() {
+		return listAdults;
+	}
+
+	public void setListAdults(ArrayList<Data> listAdults) {
+		this.listAdults = listAdults;
+	}
+
+	public ArrayList<Data> getListAdolecences() {
+		return listAdolecences;
+	}
+
+	public void setListAdolecences(ArrayList<Data> listAdolecences) {
+		this.listAdolecences = listAdolecences;
+	}
+
+	public ArrayList<Data> getListChildhood() {
+		return listChildhood;
+	}
+
+	public void setListChildhood(ArrayList<Data> listChildhood) {
+		this.listChildhood = listChildhood;
+	}
+
+	public ArrayList<Data> getListBirth() {
+		return listBirth;
+	}
+
+	public void setListBirth(ArrayList<Data> listBirth) {
+		this.listBirth = listBirth;
+	}
+
+	public ArrayList<Data> getListTropus() {
+		return listTropus;
+	}
+
+	public void setListTropus(ArrayList<Data> listTropus) {
+		this.listTropus = listTropus;
+	}
+
+	public ArrayList<Data> getListInopios() {
+		return listInopios;
+	}
+
+	public void setListInopios(ArrayList<Data> listInopios) {
+		this.listInopios = listInopios;
+	}
+
+	public ArrayList<Data> getListDies() {
+		return listDies;
+	}
+
+	public void setListDies(ArrayList<Data> listDies) {
+		this.listDies = listDies;
+	}
+
+	public ArrayList<Data> getListOlds() {
+		return listOlds;
+	}
+
+	public void setListOlds(ArrayList<Data> listOlds) {
+		this.listOlds = listOlds;
+	}
+	
+	
+
 }

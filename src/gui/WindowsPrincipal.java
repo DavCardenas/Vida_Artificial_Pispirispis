@@ -201,8 +201,7 @@ public class WindowsPrincipal extends JFrame implements Runnable{
 			public void actionPerformed(ActionEvent e) {
 				getValuesFromComponents();
 				initSimulation();
-				dialogGraphic.setList(simulation.getListMale());
-//				jScrollPane = new JScrollPane(jTable);
+				dialogGraphic.setList(simulation.getListAdults());
 				JFreeChart freeChart = ChartFactory.createLineChart("Pispirispis","Dìas","Población",dialogGraphic.getDefaultCategoryDataset(),
 						PlotOrientation.VERTICAL,true,true,false);
 				chartPanel = new ChartPanel(freeChart);
