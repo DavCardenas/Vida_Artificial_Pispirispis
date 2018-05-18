@@ -8,8 +8,8 @@ public class Alicanola {
 	private double position_Y; // posicion Y
 	private double size; // tamaño
 	private double energy; // cantidad de energia que aporta
-	
-	
+
+
 	public Alicanola(double position_X, double position_Y, double energy, double size) {
 		super();
 		this.position_X = position_X;
@@ -17,7 +17,7 @@ public class Alicanola {
 		this.energy = energy;
 		this.size = size;
 	}
-	
+
 	/**
 	 * retorna un rectangle para calcular la colision
 	 * @return
@@ -29,7 +29,7 @@ public class Alicanola {
 	public double getSize() {
 		return size;
 	}
-	
+
 	public void setSize(double size) {
 		this.size = size;
 	}
@@ -57,7 +57,7 @@ public class Alicanola {
 	public void setEnergy(double energy) {
 		this.energy = energy;
 	}
-	
-	
-	
+
+
+
 }
