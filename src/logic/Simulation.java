@@ -84,8 +84,9 @@ public class Simulation implements Runnable {
 	
 	@Override
 	public void run() {
+		
 		for (int i = 0; i < (time_simulation*DAYS_FOR_YEAR) && !start_simulation; i++) { // simulacion cada dia
-			this.listMale.add(new Data(i, this.habitat.getSize_poblation()));//se agrega los hombres
+			
 	
 			for (int j = 0; j < Habitat.poblation.size(); j++) {
 				Habitat.poblation.get(j).evolution(); // incrementa la edad de cada pispirispi
@@ -96,6 +97,7 @@ public class Simulation implements Runnable {
 			
 			if (i%DAYS_FOR_MONTH == 0) { // genera comida cada 30 dias
 				habitat.generateFood();
+				this.listMale.add(new Data(i, this.habitat.getSize_poblation()));//se agrega los hombres
 			}
 			try {
 				Thread.sleep(100);

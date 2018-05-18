@@ -47,9 +47,9 @@ public class Pispirispi implements Runnable{
 	 * controla el cambio de etapa y la edad
 	 */
 	public void evolution() {
+		age++;
 		changeStage();
 		calculateSize();
-		age++;
 		
 	}
 	
@@ -59,14 +59,19 @@ public class Pispirispi implements Runnable{
 	 */
 	private void changeStage() {
 		double time = stage.getTime()*Simulation.DAYS_FOR_YEAR;
-		
-		if (age >= time) {
-			if (canEvolution) {
-				stage = Stage.getNextStage(stage);
-				canEvolution = false;
-			}else {
-				stage = Stage.MORIR;
+		System.out.println("Primero " + stage.getTime());
+		if (stage != Stage.NACIMIENTO) {
+			if (age >= time) {
+				if (canEvolution) {
+					stage = Stage.getNextStage(stage);
+					canEvolution = false;
+				}else {
+					System.out.println("Segundo se Muere");
+					stage = Stage.MORIR;
+				}
 			}
+		}else {
+			stage = Stage.getNextStage(stage);
 		}
 	}
 
