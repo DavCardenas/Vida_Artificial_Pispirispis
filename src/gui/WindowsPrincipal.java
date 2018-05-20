@@ -142,16 +142,6 @@ public class WindowsPrincipal extends JFrame implements Runnable{
 					chartPanel.setPreferredSize(new Dimension(500, 500));
 					chartPanel.setVisible(true);
 					dialogGraphic.getjScrollPane().setVisible(true);
-				}else {
-//					JFreeChart freeChart2 = ChartFactory.createLineChart("Pispirispis","Dìas",
-//							titleGraphic,dialogGraphic.getDefaultCategoryDataset(titleGraphic),
-//							PlotOrientation.VERTICAL,true,true,false);
-//					chartPanel.setChart(freeChart2);
-//					dialogGraphic.addValuesToTable();
-//					chartPanel.repaint();
-//					dialogGraphic.getPanelGraphic().repaint();
-//					dialogGraphic.getjScrollPane().repaint();
-//					dialogGraphic.repaint();
 				}
 				dialogGraphic.setVisible(true);		
 			}
