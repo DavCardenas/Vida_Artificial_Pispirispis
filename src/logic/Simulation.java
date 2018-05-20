@@ -117,7 +117,6 @@ public class Simulation implements Runnable {
 			
 			if (i%DAYS_FOR_MONTH == 0) { // genera comida cada 30 dias
 				this.listPoblationSize.add(new Data(i, this.habitat.getSize_poblation()));//se agrega poblacion
-				
 				this.listMale.add(new Data(i, this.habitat.getAmmout_genre_male()));//se agrega Hombres
 				this.listFemale.add(new Data(i, this.habitat.getAmmout_genre_female()));//se agrega Mujeres
 				this.listAdults.add(new Data(i, this.habitat.getAmmount_age_adult()));//se agrega Adultos

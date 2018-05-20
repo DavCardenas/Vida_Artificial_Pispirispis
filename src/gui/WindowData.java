@@ -2,8 +2,11 @@ package gui;
 
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
+import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -22,6 +25,7 @@ private JPanel panelGraphic;
 	private JTable jTable;
 	private DefaultTableModel defaultTableModel;
 	private JScrollPane jScrollPane;
+	private JButton btnExit;
 	
 	private ArrayList<Data> list;
 	
@@ -31,6 +35,7 @@ private JPanel panelGraphic;
 		this.list = list;
 		this.setLayout(new FlowLayout());
 		this.panelGraphic = new JPanel();
+		this.setUndecorated(true);
 		this.setSize(new Dimension(1000, 700));
 		this.panelGraphic.setSize(new Dimension(500, 500));
 		this.setLocationRelativeTo(null);
@@ -60,11 +65,11 @@ private JPanel panelGraphic;
 		}
 	}
 	
-	public DefaultCategoryDataset getDefaultCategoryDataset() {
+	public DefaultCategoryDataset getDefaultCategoryDataset(String cad) {
 		DefaultCategoryDataset categoryDataset = new DefaultCategoryDataset();
 		for (int i = 0; i < this.list.size(); i++) {
 			categoryDataset.addValue(this.list.get(i).
-					getValue(), "Hombre", ""+this.list.
+					getValue(), cad, ""+this.list.
 					get(i).getDay());
 		}
 		
@@ -74,7 +79,20 @@ private JPanel panelGraphic;
 	public void addScrollPane() {
 		add(jScrollPane);
 	}
-
+	
+	public void addButton() {
+		this.btnExit = new JButton("Volver");
+		this.btnExit.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				dispose();
+			}
+		});
+		this.add(btnExit);
+	}
+	
 	public JPanel getPanelGraphic() {
 		return panelGraphic;
 	}
